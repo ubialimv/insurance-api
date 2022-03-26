@@ -1,0 +1,7 @@
+node_modules
+reports
+dist
+coverage
+.env.local
+.env.prod
+.env

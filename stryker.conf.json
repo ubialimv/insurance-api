@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "cleanTempDir": true,
+  "mutate": ["src/domain/**/*.ts", "!src/domain/**/*.spec.ts"],
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json",
+  "testRunner": "jest",
+  "coverageAnalysis": "perTest",
+  "thresholds": {
+    "high": 95,
+    "low": 90,
+    "break": 85
+  },
+  "jest": {
+    "projectType": "custom",
+    "configFile": "./jest/jest.mutation-config.js",
+    "enableFindRelatedTests": true
+  }
+}

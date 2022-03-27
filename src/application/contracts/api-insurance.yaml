@@ -1,0 +1,127 @@
+openapi: '3.0.2'
+info:
+  title: api_insurance
+  version: '1.0'
+paths:
+  /plans/suggestions:
+    post:
+      summary: Returns a plan suggestion for each insurance
+      tags:
+        - /plans
+      description: >-
+        Returns a plan suggestion for each insurance (auto, disability, home and life)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          $ref: '#/components/responses/200_Plans'
+        '500':
+          $ref: '#/components/responses/500_Internal'
+components:
+  schemas:
+    ResponseError:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            required:
+              - path
+              - message
+              - errorCode
+            properties:
+              path:
+                type: string
+              message:
+                type: string
+              errorCode:
+                type: string
+    User:
+      type: object
+      required:
+        - age
+        - dependents
+        - income
+        - marital_status
+        - risk_questions
+      properties:
+        age:
+          type: integer
+          minimum: 0
+        dependents:
+          type: integer
+          minimum: 0
+        income:
+          type: number
+          minimum: 0
+        marital_status:
+          type: string
+          enum: [single, married]
+        risk_questions:
+          type: array
+          items:
+            type: integer
+            enum: [0, 1]
+          minItems: 3
+          maxItems: 3
+        house:
+          type: object
+          required:
+            - ownership_status
+          properties:
+            ownership_status:
+              type: string
+              enum: [owned, mortgaged]
+        vehicle:
+          type: object
+          required:
+            - year
+          properties:
+            year:
+              type: integer
+    PlanOrEligibility:
+      type: string
+      enum: [economic, regular, responsible, ineligible]
+    Plans:
+      type: object
+      required:
+        - auto
+        - disability
+        - home
+        - life
+      properties:
+        auto:
+          $ref: '#/components/schemas/PlanOrEligibility'
+        disability:
+          $ref: '#/components/schemas/PlanOrEligibility'
+        home:
+          $ref: '#/components/schemas/PlanOrEligibility'
+        life:
+          $ref: '#/components/schemas/PlanOrEligibility'
+  responses:
+    200_Plans:
+      description: Successful request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Plans'
+    400_Bad_Request:
+      description: Unprocessable Entity.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseError'
+    500_Internal:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseError'

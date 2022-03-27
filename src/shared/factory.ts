@@ -5,6 +5,7 @@ import DisabilityEngine from '../domain/engine/specialized/disability.engine';
 import HomeEngine from '../domain/engine/specialized/home.engine';
 import LifeEngine from '../domain/engine/specialized/life.engine';
 import PlanService from '../domain/plan/plan.service';
+import PlanController from '../application/controllers/plan.controller';
 
 const makeCommonRuleEngine = () => new CommonRulesEngine(new BasicEngine());
 
@@ -21,11 +22,14 @@ const makePlanService = () =>
     makeLifeEngine()
   );
 
+const makePlanController = () => new PlanController(makePlanService());
+
 export {
   makeCommonRuleEngine,
   makeAutoEngine,
   makeDisabilityEngine,
   makeHomeEngine,
   makeLifeEngine,
-  makePlanService
+  makePlanService,
+  makePlanController
 };
